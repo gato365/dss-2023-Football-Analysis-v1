@@ -1,0 +1,57 @@
+---
+title: "Untitled"
+author: "Immanuel Williams PhD"
+date: "2023-01-17"
+output: html_document
+---
+
+
+
+
+```{r}
+library(rvest)
+# library(XML) ## Extract urls
+# library(httr) ## Extract urls
+library(tidyverse) ## String and data
+
+passing_url = "https://www.pro-football-reference.com/years/2022/passing.htm"
+rushing_url = "https://www.pro-football-reference.com/years/2022/rushing.htm"
+
+
+
+passing_df <- read_html(x = passing_url) %>%
+        html_nodes("table") %>%
+        .[1] %>%
+        html_table(fill = TRUE) %>% 
+  .[[1]]
+
+```
+
+
+
+
+```{r}
+rushing_df <- read_html(x = rushing_url) %>%
+        html_nodes("table") %>%
+        .[1] %>%
+        html_table(fill = TRUE) %>% 
+  .[[1]]
+
+colnames(rushing_df) = rushing_df[1,] 
+
+mod_1_rushing_df = rushing_df %>% 
+  filter(!str_detect(Rk, "Rk")) %>% 
+  mutate_if(is.numeric, as.numeric)
+```
+
+
+```{r}
+x_variable = "Att"; y_variable = "Yds"
+
+mod_1_rushing_df %>% 
+  ggplot(aes_string(x = x_variable,y = y_variable)) +
+  geom_point() +
+  theme_bw()
+```
+
+
