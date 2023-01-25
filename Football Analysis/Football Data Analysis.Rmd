@@ -25,12 +25,6 @@ passing_df <- read_html(x = passing_url) %>%
         html_table(fill = TRUE) %>% 
   .[[1]]
 
-```
-
-
-
-
-```{r}
 rushing_df <- read_html(x = rushing_url) %>%
         html_nodes("table") %>%
         .[1] %>%
@@ -42,6 +36,13 @@ colnames(rushing_df) = rushing_df[1,]
 mod_1_rushing_df = rushing_df %>% 
   filter(!str_detect(Rk, "Rk")) %>% 
   mutate_if(is.numeric, as.numeric)
+```
+
+
+
+
+```{r}
+
 ```
 
 
