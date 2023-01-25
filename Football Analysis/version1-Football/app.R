@@ -32,7 +32,13 @@ colnames(rushing_df) = rushing_df[1,]
 
 mod_1_rushing_df = rushing_df %>% 
   filter(!str_detect(Rk, "Rk")) %>% 
-  mutate_if(is.numeric, as.numeric)
+  mutate(Tm = case_when(
+    Tm == "2TM" ~ "Two_Teams",
+    Tm == "3TM" ~ "Three_Teams",
+    TRUE ~ Tm
+  )) %>% 
+  mutate_if(~ any(str_detect(string = ., pattern = '[0-9]')),
+            ~ as.numeric(str_remove_all(string = ., pattern = ',')))
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
